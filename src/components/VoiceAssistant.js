@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
-import Button from "@mui/material/Button";
-
-
+import { Button } from "@mui/material";
 
 const VoiceAssistant = () => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
@@ -11,21 +9,6 @@ const VoiceAssistant = () => {
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return <span>Your browser does not support speech recognition.</span>;
   }
-
-  const handleProcessSpeech = async () => {
-    setResponse("Processing speech...");
-  
-    const res = await fetch("https://primary-production-d1f2.up.railway.app//webhook/process-speech", {
-      method: "POST",
-      headers: { "Content-Type": "application/json",
-        "Accept": "application/json"
-       },
-      body: JSON.stringify({ text: transcript })
-    });
-  
-    const data = await res.json();
-    setResponse(data.correctedText || "Error processing speech");
-  };
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
@@ -38,14 +21,8 @@ const VoiceAssistant = () => {
         Reset
       </Button>
       <p>Transcript: {transcript}</p>
-      <Button variant="contained" onClick={handleProcessSpeech} style={{ marginTop: "10px" }}>
-        Process Speech
-      </Button>
-      <p>AI Response: {response}</p>
     </div>
   );
 };
 
-export default function App() {
-  return <VoiceAssistant />;
-}
+export default VoiceAssistant;
